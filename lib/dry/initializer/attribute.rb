@@ -56,7 +56,7 @@ module Dry::Initializer
 
     def postsetter
       "@__options__[:#{target}] = @#{target}" \
-      " unless @#{target} == #{undefined}"
+      " unless #{undefined} == @#{target}"
     end
 
     def getter
@@ -86,7 +86,7 @@ module Dry::Initializer
 
     def reader_definition
       if @undefined
-        "def #{target}; @#{target} unless @#{target} == #{undefined}; end"
+        "def #{target}; @#{target} unless #{undefined} == @#{target}; end"
       else
         "attr_reader :#{target}"
       end
@@ -115,7 +115,7 @@ module Dry::Initializer
       return {} unless coercer
 
       value = coercer unless @undefined
-      value ||= proc { |v| v == Dry::Initializer::UNDEFINED ? v : coercer.(v) }
+      value ||= proc { |v| Dry::Initializer::UNDEFINED == v ? v : coercer.(v) }
 
       { :"#{type}_#{source}" => value }
     end

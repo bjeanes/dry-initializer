@@ -39,12 +39,8 @@ module Dry::Initializer
     end
 
     def maybe_default
-      "#{target}#{default_part}"
-    end
-
-    def default_part
-      return unless default
-      " == #{undefined} ?" \
+      return target.to_s unless default
+      "#{undefined} == #{target} ?" \
       " instance_exec(&__defaults__[:param_#{target}]) :" \
       " #{target}"
     end
